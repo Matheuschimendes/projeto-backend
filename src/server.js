@@ -1,9 +1,17 @@
-require('dotenv').config();
+require("dotenv").config();
+const app = require("./app");
+const db = require("./models");
 
-const app = require('./app');
+const PORT = process.env.PORT || 3000;
 
-const port = Number(process.env.PORT) || 3000;
-
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
-});
+db.sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Banco conectado com sucesso.");
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando na porta ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Erro ao conectar no banco:", error);
+  });

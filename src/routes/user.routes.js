@@ -1,25 +1,12 @@
 const { Router } = require("express");
+const UserController = require("../controllers/UserController");
 
 const router = Router();
 
-router.get("/:id", (req, res) => {
-  return res.status(200).json({ message: `Buscar usuário ${req.params.id}` });
-});
-
-router.post("/", (req, res) => {
-  return res.status(201).json({ message: "Usuário criado com sucesso" });
-});
-
-router.put("/:id", (req, res) => {
-  return res.status(204).send();
-});
-
-router.delete("/:id", (req, res) => {
-  return res.status(204).send();
-});
-
-router.post("/token", (req, res) => {
-  return res.status(200).json({ token: "token-exemplo" });
-});
+router.get("/", UserController.index);
+router.get("/:id", UserController.show);
+router.post("/", UserController.store);
+router.put("/:id", UserController.update);
+router.delete("/:id", UserController.delete);
 
 module.exports = router;
