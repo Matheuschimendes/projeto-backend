@@ -13,11 +13,12 @@ Para a implementação deste projeto vamo precisar usar as seguintes tecnologias
 
 ## Estrutura de diretório
 ```
-project-root/
+projeto-backend/
 ├── src/
 │   ├── config/
 │   ├── controllers/
 │   ├── middleware/
+│   ├── migrations/
 │   ├── models/
 │   ├── routes/
 │   ├── services/
@@ -25,8 +26,11 @@ project-root/
 │   └── server.js
 ├── tests/
 ├── .env
+├── .env.example
 ├── .gitignore
-└── package.json
+├── .sequelizerc
+├── package.json
+└── README.md
 ```
 
 ## Response status code
