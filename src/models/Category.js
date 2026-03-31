@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
@@ -21,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       use_in_menu: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
         defaultValue: false,
       },
     },
@@ -31,6 +29,15 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
     }
   );
+
+Category.associate = (models) => {
+  Category.belongsToMany(models.Product, {
+    through: models.ProductCategory,
+    foreignKey: "category_id",
+    otherKey: "product_id",
+    as: "products",
+  });
+};
 
   return Category;
 };

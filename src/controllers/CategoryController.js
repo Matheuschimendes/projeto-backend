@@ -6,6 +6,7 @@ class CategoryController {
       const categories = await db.Category.findAll();
       return res.status(200).json(categories);
     } catch (error) {
+      console.error("Erro ao listar categorias:", error);
       return res.status(500).json({ message: "Erro ao listar categorias." });
     }
   }
@@ -22,6 +23,7 @@ class CategoryController {
 
       return res.status(200).json(category);
     } catch (error) {
+      console.error("Erro ao buscar categoria:", error);
       return res.status(500).json({ message: "Erro ao buscar categoria." });
     }
   }
@@ -44,6 +46,7 @@ class CategoryController {
 
       return res.status(201).json(category);
     } catch (error) {
+      console.error("Erro ao criar categoria:", error);
       return res.status(500).json({ message: "Erro ao criar categoria." });
     }
   }
@@ -69,6 +72,7 @@ class CategoryController {
         message: "Categoria atualizada com sucesso.",
       });
     } catch (error) {
+      console.error("Erro ao atualizar categoria:", error);
       return res.status(500).json({ message: "Erro ao atualizar categoria." });
     }
   }
@@ -87,6 +91,7 @@ class CategoryController {
 
       return res.status(204).send();
     } catch (error) {
+      console.error("Erro ao remover categoria:", error);
       return res.status(500).json({ message: "Erro ao remover categoria." });
     }
   }

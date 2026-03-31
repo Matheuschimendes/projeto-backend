@@ -1,25 +1,13 @@
 const { Router } = require("express");
+const CategoryController = require("../controllers/CategoryController");
+const authMiddleware = require("../middleware/auth.middleware");
 
 const router = Router();
 
-router.get("/search", (req, res) => {
-  return res.status(200).json({ message: "Listagem de categorias" });
-});
-
-router.get("/:id", (req, res) => {
-  return res.status(200).json({ message: `Buscar categoria ${req.params.id}` });
-});
-
-router.post("/", (req, res) => {
-  return res.status(201).json({ message: "Categoria criada com sucesso" });
-});
-
-router.put("/:id", (req, res) => {
-  return res.status(204).send();
-});
-
-router.delete("/:id", (req, res) => {
-  return res.status(204).send();
-});
+router.get("/search", authMiddleware, CategoryController.index);
+router.get("/:id", authMiddleware, CategoryController.show);
+router.post("/", authMiddleware, CategoryController.store);
+router.put("/:id", authMiddleware, CategoryController.update);
+router.delete("/:id", authMiddleware, CategoryController.delete);
 
 module.exports = router;

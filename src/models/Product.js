@@ -48,5 +48,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  // RELACIONAMENTO MANY-TO-MANY COM CATEGORY
+ Product.associate = (models) => {
+  Product.belongsToMany(models.Category, {
+    through: models.ProductCategory,
+    foreignKey: "product_id",
+    otherKey: "category_id",
+    as: "categories",
+  });
+};
+
   return Product;
 };
