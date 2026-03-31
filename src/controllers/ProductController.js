@@ -1,9 +1,31 @@
 const db = require("../models");
+const { Op } = require("sequelize");
 
 class ProductController {
+
 async index(req, res) {
   try {
-    const products = await db.Product.findAll({
+    const { name, minPrice, maxPrice, page = 1, limit = 10 } = req.query;
+
+    const where = {};
+
+    if (name) {
+      where.name = {
+        [Op.like]: `%${name}%`,
+      };
+    }
+
+    if (minPrice || maxPrice) {
+      where.price = {};
+
+      if (minPrice) where.price[Op.gte] = Number(minPrice);
+      if (maxPrice) where.price[Op.lte] = Number(maxPrice);
+    }
+
+    const offset = (page - 1) * limit;
+
+    const { count, rows } = await db.Product.findAndCountAll({
+      where,
       include: [
         {
           model: db.Category,
@@ -11,11 +33,18 @@ async index(req, res) {
           through: { attributes: [] },
         },
       ],
+      limit: Number(limit),
+      offset: Number(offset),
     });
 
-    return res.status(200).json(products);
+    return res.status(200).json({
+      total: count,
+      page: Number(page),
+      totalPages: Math.ceil(count / limit),
+      data: rows,
+    });
   } catch (error) {
-    console.error("Erro ao listar produtos:", error);
+    console.error(error);
     return res.status(500).json({ message: "Erro ao listar produtos." });
   }
 }
