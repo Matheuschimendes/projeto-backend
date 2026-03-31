@@ -1,4 +1,5 @@
 const db = require("../models");
+const bcrypt = require("bcryptjs");
 
 class UserController {
   async index(req, res) {
@@ -41,11 +42,13 @@ class UserController {
         return res.status(400).json({ message: "E-mail já cadastrado." });
       }
 
+      const hashedPassword = await bcrypt.hash(password, 8);
+
       const user = await db.User.create({
         firstname,
         surname,
         email,
-        password,
+        password: hashedPassword,
       });
 
       return res.status(201).json({
@@ -70,11 +73,17 @@ class UserController {
         return res.status(404).json({ message: "Usuário não encontrado." });
       }
 
+      let hashedPassword = user.password;
+
+      if (password) {
+        hashedPassword = await bcrypt.hash(password, 8);
+      }
+
       await user.update({
         firstname,
         surname,
         email,
-        password,
+        password: hashedPassword,
       });
 
       return res.status(200).json({
