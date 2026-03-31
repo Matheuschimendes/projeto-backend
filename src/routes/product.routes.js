@@ -1,25 +1,13 @@
 const { Router } = require("express");
+const ProductController = require("../controllers/ProductController");
+const authMiddleware = require("../middleware/auth.middleware");
 
 const router = Router();
 
-router.get("/search", (req, res) => {
-  return res.status(200).json({ message: "Busca de produtos" });
-});
-
-router.get("/:id", (req, res) => {
-  return res.status(200).json({ message: `Buscar produto ${req.params.id}` });
-});
-
-router.post("/", (req, res) => {
-  return res.status(201).json({ message: "Produto criado com sucesso" });
-});
-
-router.put("/:id", (req, res) => {
-  return res.status(204).send();
-});
-
-router.delete("/:id", (req, res) => {
-  return res.status(204).send();
-});
+router.get("/search", authMiddleware, ProductController.index);
+router.get("/:id", authMiddleware, ProductController.show);
+router.post("/", authMiddleware, ProductController.store);
+router.put("/:id", authMiddleware, ProductController.update);
+router.delete("/:id", authMiddleware, ProductController.delete);
 
 module.exports = router;
